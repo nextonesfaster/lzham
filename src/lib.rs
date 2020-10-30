@@ -7,7 +7,7 @@
 //!
 //! ## Examples
 //!
-//! ```
+//! ```no_run
 //! # use lzham::{compress, decompress};
 //! let data = String::from("This is a test.");
 //!
