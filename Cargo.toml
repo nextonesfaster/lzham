@@ -1,0 +1,20 @@
+[package]
+name = "lzham"
+version = "0.1.0"
+authors = ["AriusX7 <icyligii@gmail.com>"]
+edition = "2018"
+readme = "README.md"
+license = "MIT"
+description = "High-level bindings for the lzham codec."
+keywords = ["lzham", "compression"]
+categories = ["api-bindings", "compression"]
+repository = "https://github.com/AriusX7/lzham"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[features]
+static = ["lzham-sys/static"]
+dynamic = ["lzham-sys/dynamic"]
+
+[dependencies]
+lzham-sys = "0.1.1"
