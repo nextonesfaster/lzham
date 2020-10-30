@@ -1,4 +1,4 @@
-use super::super::{TableUpdateRate, TableUpdateInterval, traits::CType};
+use super::super::{traits::CType, TableUpdateInterval, TableUpdateRate};
 use lzham_sys::lzham_decompress_params;
 use std::{
     ops::BitOr,

@@ -67,7 +67,7 @@ impl Decompressor {
                     &mut num_in_bytes,
                     output_buffer.as_mut_ptr().add(out_buf_ofs as usize),
                     &mut out_buf_len,
-                    1 as c_uint
+                    1 as c_uint,
                 )
             };
 
@@ -87,7 +87,9 @@ impl Decompressor {
             }
         }
 
-        unsafe { output_buffer.set_len(uncompressed_size as usize); }
+        unsafe {
+            output_buffer.set_len(uncompressed_size as usize);
+        }
 
         if output.write(&output_buffer).is_err() {
             return DecompressionStatus::Failed;

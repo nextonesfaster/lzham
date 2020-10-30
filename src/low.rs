@@ -2,8 +2,8 @@ pub mod compression;
 pub mod decompression;
 mod traits;
 
-use traits::CType;
 use std::os::raw::c_uint;
+use traits::CType;
 
 /// The table update rate for compression/decompression.
 ///
@@ -64,7 +64,7 @@ impl TableUpdateRate {
             19 => (2048, 128 + (16 * 14)),
             20 => (2048, 128 + (16 * 16)),
 
-            _ => unreachable!()
+            _ => unreachable!(),
         };
 
         TableUpdateInterval(max, slow)

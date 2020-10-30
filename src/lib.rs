@@ -42,7 +42,7 @@ mod test {
 
         let data = String::from(
             "This is a test.This is a test.This is a test.\
-            1234567This is a test.This is a test.123456"
+            1234567This is a test.This is a test.123456",
         );
 
         let mut comp = Vec::new();

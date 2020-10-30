@@ -68,7 +68,9 @@ impl Compressor {
                 )
             };
 
-            unsafe { output_buffer.set_len(out_buf_len as usize); }
+            unsafe {
+                output_buffer.set_len(out_buf_len as usize);
+            }
 
             in_buf_ofs += num_in_bytes;
             out_buf_ofs += out_buf_len;
