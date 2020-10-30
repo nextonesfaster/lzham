@@ -6,7 +6,7 @@ use super::traits::CType;
 use lzham_sys::lzham_compress_state_ptr;
 use std::{
     io::{BufRead, Write},
-    os::raw::c_uint,
+    os::raw::{c_uint, c_ulong},
 };
 
 /// A high level compressor.
@@ -49,13 +49,13 @@ impl Compressor {
         let mut output_buffer: Vec<u8> = Vec::with_capacity(2 << 12);
 
         let mut in_buf_ofs = 0;
-        let mut out_buf_ofs = 0u64;
+        let mut out_buf_ofs = 0;
 
         let mut status;
 
         loop {
-            let mut num_in_bytes = input_buf.len() as u64 - in_buf_ofs;
-            let mut out_buf_len = output_buffer.capacity() as u64 - out_buf_ofs;
+            let mut num_in_bytes = input_buf.len() as c_ulong - in_buf_ofs;
+            let mut out_buf_len = output_buffer.capacity() as c_ulong - out_buf_ofs;
 
             let status_int = unsafe {
                 lzham_sys::lzham_compress(
@@ -79,12 +79,10 @@ impl Compressor {
 
             if status.is_success_or_first_failure() {
                 break;
-            } else {
-                if let CompressionStatus::HasMoreOutput = status {
-                    let size = output_buffer.len();
+            } else if let CompressionStatus::HasMoreOutput = status {
+                let size = output_buffer.len();
 
-                    output_buffer.resize(size + (size >> 3) + 6, 0);
-                }
+                output_buffer.resize(size + (size >> 3) + 6, 0);
             }
         }
 

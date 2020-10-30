@@ -6,7 +6,7 @@ use super::traits::CType;
 use lzham_sys::lzham_decompress_state_ptr;
 use std::{
     io::{BufRead, Write},
-    os::raw::c_uint,
+    os::raw::{c_uint, c_ulong},
 };
 
 /// A high level decompressor.
@@ -18,7 +18,7 @@ impl Decompressor {
     ///
     /// [`options`]: DecompressionOptions
     pub fn from_options(options: DecompressionOptions) -> Self {
-        Self(unsafe { lzham_sys::lzham_decompress_init(&options.clone().to_c_type()) })
+        Self(unsafe { lzham_sys::lzham_decompress_init(&options.to_c_type()) })
     }
 
     /// Reinitializes the decompressor.
@@ -48,7 +48,7 @@ impl Decompressor {
         }
 
         let mut output_buffer: Vec<u8> = Vec::with_capacity(uncompressed_size);
-        let uncompressed_size = uncompressed_size as u64;
+        let uncompressed_size = uncompressed_size as c_ulong;
 
         let mut in_buf_ofs = 0;
         let mut out_buf_ofs = 0;
@@ -57,7 +57,7 @@ impl Decompressor {
         let mut status;
 
         loop {
-            let mut num_in_bytes = input_buf.len() as u64;
+            let mut num_in_bytes = input_buf.len() as c_ulong;
             let mut out_buf_len = uncompressed_size - out_buf_ofs;
 
             let status_int = unsafe {
