@@ -16,5 +16,7 @@ repository = "https://github.com/AriusX7/lzham"
 static = ["lzham-sys/static"]
 dynamic = ["lzham-sys/dynamic"]
 
-[dependencies]
-lzham-sys = "0.1.1"
+[dependencies.lzham-sys]
+git = "https://github.com/AriusX7/lzham-sys"
+version = "0.1.1"
+branch = "main"
