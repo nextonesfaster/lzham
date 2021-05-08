@@ -6,7 +6,7 @@ use super::traits::CType;
 use lzham_sys::lzham_decompress_state_ptr;
 use std::{
     io::{BufRead, Write},
-    os::raw::{c_uint, c_ulong},
+    os::raw::c_uint,
 };
 
 /// A high level decompressor.
@@ -30,7 +30,7 @@ impl Decompressor {
     ///
     /// It cannot be used to decompress further.
     pub fn deinit(&self) -> u32 {
-        unsafe { lzham_sys::lzham_decompress_deinit(self.0) as u32 }
+        unsafe { lzham_sys::lzham_decompress_deinit(self.0) }
     }
 
     /// Decompresses input data into the output buffer with already specified [`options`].
@@ -48,17 +48,20 @@ impl Decompressor {
         }
 
         let mut output_buffer: Vec<u8> = Vec::with_capacity(uncompressed_size);
-        let uncompressed_size = uncompressed_size as c_ulong;
+        let uncompressed_size_szt = uncompressed_size as lzham_sys::size_t;
 
         let mut in_buf_ofs = 0;
         let mut out_buf_ofs = 0;
-        let mut dst_bytes_left = uncompressed_size;
+        let mut dst_bytes_left = uncompressed_size_szt;
 
         let mut status;
 
+        let mut num_in_bytes;
+        let mut out_buf_len;
+
         loop {
-            let mut num_in_bytes = input_buf.len() as c_ulong;
-            let mut out_buf_len = uncompressed_size - out_buf_ofs;
+            num_in_bytes = input_buf.len() as lzham_sys::size_t;
+            out_buf_len = uncompressed_size_szt - out_buf_ofs;
 
             let status_int = unsafe {
                 lzham_sys::lzham_decompress(
@@ -88,7 +91,7 @@ impl Decompressor {
         }
 
         unsafe {
-            output_buffer.set_len(uncompressed_size as usize);
+            output_buffer.set_len(uncompressed_size);
         }
 
         if output.write(&output_buffer).is_err() {

@@ -6,7 +6,7 @@ use super::traits::CType;
 use lzham_sys::lzham_compress_state_ptr;
 use std::{
     io::{BufRead, Write},
-    os::raw::{c_uint, c_ulong},
+    os::raw::c_uint,
 };
 
 /// A high level compressor.
@@ -30,7 +30,7 @@ impl Compressor {
     ///
     /// It cannot be used to compress further.
     pub fn deinit(&self) -> u32 {
-        unsafe { lzham_sys::lzham_compress_deinit(self.0) as u32 }
+        unsafe { lzham_sys::lzham_compress_deinit(self.0) }
     }
 
     /// Compresses input data into the output buffer with already specified [`options`].
@@ -53,9 +53,12 @@ impl Compressor {
 
         let mut status;
 
+        let mut num_in_bytes;
+        let mut out_buf_len;
+
         loop {
-            let mut num_in_bytes = input_buf.len() as c_ulong - in_buf_ofs;
-            let mut out_buf_len = output_buffer.capacity() as c_ulong - out_buf_ofs;
+            num_in_bytes = input_buf.len() as lzham_sys::size_t - in_buf_ofs;
+            out_buf_len = output_buffer.capacity() as lzham_sys::size_t - out_buf_ofs;
 
             let status_int = unsafe {
                 lzham_sys::lzham_compress(

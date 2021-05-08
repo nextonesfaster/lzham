@@ -1,6 +1,6 @@
 [package]
 name = "lzham"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["AriusX7 <icyligii@gmail.com>"]
 edition = "2018"
 readme = "README.md"
@@ -15,8 +15,7 @@ repository = "https://github.com/AriusX7/lzham"
 [features]
 static = ["lzham-sys/static"]
 dynamic = ["lzham-sys/dynamic"]
+generate_binding = ["lzham-sys/generate_binding"]
 
 [dependencies.lzham-sys]
-git = "https://github.com/AriusX7/lzham-sys"
 version = "0.1.1"
-branch = "main"
